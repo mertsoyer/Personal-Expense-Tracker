@@ -15,6 +15,7 @@
         <th>Gelir</th>
         <th>Tarih</th>
         <th>Tutar</th>
+        <th>Kategori</th>
         <th>Sil</th>
      
     </tr>
@@ -22,9 +23,10 @@
     {
         <tr>
             <td>@item.Name</td>
-            <td>@item.Date</td>
+            <td>@item.FormatedDate</td>
             <td>@item.Amount</td>
-            <td><a href="/expense/DeleteExpense/@item.Id" class="btn btn-danger" >Sil</a></td>
+            <td>@item.Category</td>
+            <td><a href="/income/DeleteIncome/@item.Id" class="btn btn-danger" >Sil</a></td>
             
         </tr>
     }

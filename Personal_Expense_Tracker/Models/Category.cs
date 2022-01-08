@@ -9,6 +9,7 @@ namespace Personal_Expense_Tracker.Models
     {
         public int CategoryId { get; set; }
         public string Name { get; set; }
+        public string Type { get; set; }
         public List<Transaction> Transactions { get; set; }
 
     }

@@ -1,4 +1,4 @@
-﻿@model List<Transaction>
+﻿@model TransactionListViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
@@ -6,8 +6,24 @@
 
 <h1>Index</h1>
 
+<form asp-action="Index" asp-controller="Expense" method="post">
 
+    <input type="date" id="txtSelectedDate" name="startDate" />
+    <input type="date" id="txtSelectedDate" name="endDate" />
+    <input type="submit" value="Submit" />
+    
 
+    <script type="text/javascript">
+        $(function () {
+            $('#txtSelectedDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "tr"
+            });
+        });
+    </script>
+</form>
 
 <a href="/expense/AddExpense" class="btn btn-info">Harcama Ekle</a>
 <br />
@@ -19,18 +35,18 @@
         <th>Kategori</th>
         <th>Güncelle</th>
         <th>Sil</th>
-     
+
     </tr>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Transactions)
     {
         <tr>
             <td>@item.Name</td>
-            <td>@item.Date</td>
+            <td>@item.FormatedDate</td>
             <td>@item.Amount</td>
             <td>@item.Category.Name</td>
-            <td><a href="" class="btn btn-success" >Güncelle</a></td>
-            <td><a href="/expense/DeleteExpense/@item.Id" class="btn btn-danger" >Sil</a></td>
-            
+            <td><a href="" class="btn btn-success">Güncelle</a></td>
+            <td><a href="/expense/DeleteExpense/@item.Id" class="btn btn-danger">Sil</a></td>
+
         </tr>
     }
 </table>

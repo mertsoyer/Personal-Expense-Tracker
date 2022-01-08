@@ -16,22 +16,64 @@ namespace Personal_Expense_Tracker.Controllers
         ApplicationDbContext context = new ApplicationDbContext();
         private UserManager<IdentityUser> _userManager;
 
+        public ExpenseController(UserManager<IdentityUser> userManager)
+        {
+            _userManager = userManager;
+        }
+        [HttpGet]
         public IActionResult Index()
         {
-            //var id = _userManager.GetUserId(User);
-            //var islemler = context.Transactions.Where(l=>l.    Include(x => x.Category).ToList();
+            var id = _userManager.GetUserId(User);
+            var islemler = context.Transactions.Include(x => x.Category).Where(l => l.UserId == id && l.Amount < 0 ).ToList();
 
-            //var islemler =context.Transactions.ToList();
+            foreach (var item in islemler)
+            {
+                item.FormatedDate = item.Date.ToShortDateString();
+            }
 
-            return View(/*islemler*/);
+            var listModel = new TransactionListViewModel();
+            listModel.Transactions = islemler;
+
+            return View(listModel);
+        }
+
+        [HttpPost]
+        public IActionResult Index([FromForm] TransactionListViewModel transactionListViewModel)
+        {
+            var id = _userManager.GetUserId(User);
+
+            
+            var query = context.Transactions.Include(x => x.Category).Where(l => l.UserId == id && l.Amount < 0);
+            if (transactionListViewModel.StartDate!=default(DateTime))
+            {
+                query = query.Where(x=> x.Date > transactionListViewModel.StartDate);
+            }
+            if (transactionListViewModel.EndDate!=default(DateTime))
+            {
+                query = query.Where(x => x.Date <= transactionListViewModel.EndDate);
+
+            }
+            var islemler = query.ToList();
+            foreach (var item in islemler)
+            {
+                item.FormatedDate = item.Date.ToShortDateString();
+            }
+
+            transactionListViewModel.Transactions = islemler;
+
+            return View(transactionListViewModel);
+
+
+
+            
         }
 
 
         [HttpGet]
         public IActionResult AddExpense()
         {
-            (from Category in context.Categories select Category).ToList();
-            List<SelectListItem> kategoriler = (from x in context.Categories.ToList()
+            
+            List<SelectListItem> kategoriler = (from x in context.Categories.Where(l=> l.Type=="expense").ToList()
                                                 select new SelectListItem
                                                 {
 
@@ -52,11 +94,14 @@ namespace Personal_Expense_Tracker.Controllers
         [HttpPost]
         public IActionResult AddExpense(Transaction transaction)
         {
+            var id = _userManager.GetUserId(User);
+
 
             var yeniIslem = context.Categories.Where(x => x.CategoryId == transaction.Category.CategoryId)
                 .FirstOrDefault();
             transaction.Category = yeniIslem;
             transaction.Amount = -transaction.Amount;
+            transaction.UserId = id;
             context.Transactions.Add(transaction);
             context.SaveChanges();
 
