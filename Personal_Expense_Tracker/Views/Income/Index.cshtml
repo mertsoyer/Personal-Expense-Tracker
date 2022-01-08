@@ -7,17 +7,14 @@
 <h1>Index</h1>
 
 
-
-
-<a href="/expense/AddExpense" class="btn btn-info">Harcama Ekle</a>
+<a href="/income/AddIncome" class="btn btn-info">Gelir Ekle</a>
 <br />
+<br/>
 <table class="table table-bordered">
     <tr>
-        <th>İşlem Adı</th>
+        <th>Gelir</th>
         <th>Tarih</th>
         <th>Tutar</th>
-        <th>Kategori</th>
-        <th>Güncelle</th>
         <th>Sil</th>
      
     </tr>
@@ -27,8 +24,6 @@
             <td>@item.Name</td>
             <td>@item.Date</td>
             <td>@item.Amount</td>
-            <td>@item.Category.Name</td>
-            <td><a href="" class="btn btn-success" >Güncelle</a></td>
             <td><a href="/expense/DeleteExpense/@item.Id" class="btn btn-danger" >Sil</a></td>
             
         </tr>

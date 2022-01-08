@@ -13,7 +13,8 @@ namespace Personal_Expense_Tracker.Models
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public int CategoryId { get; set; }
-        public Category Categories { get; set; }
+        public Category Category { get; set; }
+        public string UserId { get; set; }
 
     }
 }
