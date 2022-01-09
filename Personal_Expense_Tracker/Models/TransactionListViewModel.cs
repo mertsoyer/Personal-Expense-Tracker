@@ -17,5 +17,6 @@ namespace Personal_Expense_Tracker.Models
         public decimal MinAmount { get; set; }
         public decimal MaxAmount { get; set; }
         public int CategoryId { get; set; }
+        public decimal TransactionSum { get; set; }
     }
 }

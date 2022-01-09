@@ -9,15 +9,16 @@
 
 <a href="/income/AddIncome" class="btn btn-info">Gelir Ekle</a>
 <br />
-<br/>
+<br />
 <table class="table table-bordered">
     <tr>
         <th>Gelir</th>
         <th>Tarih</th>
         <th>Tutar</th>
         <th>Kategori</th>
+        <th>Güncelle</th>
         <th>Sil</th>
-     
+
     </tr>
     @foreach (var item in Model)
     {
@@ -25,9 +26,10 @@
             <td>@item.Name</td>
             <td>@item.FormatedDate</td>
             <td>@item.Amount</td>
-            <td>@item.Category</td>
-            <td><a href="/income/DeleteIncome/@item.Id" class="btn btn-danger" >Sil</a></td>
-            
+            <td>@item.Category.Name</td>
+             <td><a href="/income/UpdateIncome/@item.Id" class="btn btn-success">Güncelle</a></td>
+            <td><a href="/income/DeleteIncome/@item.Id" class="btn btn-danger">Sil</a></td>
+
         </tr>
     }
 </table>

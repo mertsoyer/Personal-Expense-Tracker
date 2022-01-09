@@ -1,0 +1,18 @@
+﻿@model Transaction
+@{
+    ViewData["Title"] = "UpdateIncome";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+<h1>Gelir Güncelle</h1>
+
+<form asp-action="UpdateIncome" asp-controller="Income" method="post">
+
+    <input type="hidden" asp-for="Id" />
+    <input type="text" asp-for="Name" />
+    <input type="text" asp-for="Amount" />
+
+    <button>Güncelle</button>
+
+
+</form>

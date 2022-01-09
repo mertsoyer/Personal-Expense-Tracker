@@ -11,7 +11,7 @@
     <input type="date" id="txtSelectedDate" name="startDate" />
     <input type="date" id="txtSelectedDate" name="endDate" />
     <input type="submit" value="Submit" />
-    
+
 
     <script type="text/javascript">
         $(function () {
@@ -44,9 +44,15 @@
             <td>@item.FormatedDate</td>
             <td>@item.Amount</td>
             <td>@item.Category.Name</td>
-            <td><a href="" class="btn btn-success">Güncelle</a></td>
+            <td><a href="/expense/UpdateExpense/@item.Id" class="btn btn-success">Güncelle</a></td>
             <td><a href="/expense/DeleteExpense/@item.Id" class="btn btn-danger">Sil</a></td>
 
         </tr>
     }
+
+    <tr>
+        <td></td>
+        <td>Toplam Tutar</td>
+        <td>@Model.TransactionSum</td>
+    </tr>
 </table>

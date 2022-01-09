@@ -97,5 +97,39 @@ namespace Personal_Expense_Tracker.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult UpdateIncome(int id)
+        {
+            var gelirGuncelle=context.Transactions.Find(id);
+
+
+            return View(gelirGuncelle);
+        }
+
+
+        [HttpPost]
+        public IActionResult UpdateIncome(Transaction transaction)
+        {
+            var gelirGuncelle=context.Transactions.Find(transaction.Id);
+            gelirGuncelle.Amount = transaction.Amount;
+            gelirGuncelle.Name = transaction.Name;  
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteIncome(int id)
+        {
+           
+            var gelirSil=context.Transactions.Find(id);
+            context.Remove(gelirSil);
+            context.SaveChanges();
+
+            //var islemler = context.Transactions.Include(x => x.Category).ToList();
+
+
+            return RedirectToAction("Index");
+        }
     }
 }

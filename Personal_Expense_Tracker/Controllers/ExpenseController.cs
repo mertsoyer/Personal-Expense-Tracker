@@ -20,6 +20,7 @@ namespace Personal_Expense_Tracker.Controllers
         {
             _userManager = userManager;
         }
+        
         [HttpGet]
         public IActionResult Index()
         {
@@ -33,6 +34,7 @@ namespace Personal_Expense_Tracker.Controllers
 
             var listModel = new TransactionListViewModel();
             listModel.Transactions = islemler;
+            listModel.TransactionSum = islemler.Sum(x => x.Amount);
 
             return View(listModel);
         }
@@ -46,7 +48,7 @@ namespace Personal_Expense_Tracker.Controllers
             var query = context.Transactions.Include(x => x.Category).Where(l => l.UserId == id && l.Amount < 0);
             if (transactionListViewModel.StartDate!=default(DateTime))
             {
-                query = query.Where(x=> x.Date > transactionListViewModel.StartDate);
+                query = query.Where(x=> x.Date >= transactionListViewModel.StartDate);
             }
             if (transactionListViewModel.EndDate!=default(DateTime))
             {
@@ -61,10 +63,10 @@ namespace Personal_Expense_Tracker.Controllers
 
             transactionListViewModel.Transactions = islemler;
 
+
+            transactionListViewModel.TransactionSum = islemler.Sum(x => x.Amount);
+
             return View(transactionListViewModel);
-
-
-
             
         }
 
@@ -90,6 +92,7 @@ namespace Personal_Expense_Tracker.Controllers
 
             return View();
         }
+
 
         [HttpPost]
         public IActionResult AddExpense(Transaction transaction)
@@ -123,6 +126,7 @@ namespace Personal_Expense_Tracker.Controllers
             return RedirectToAction("Index");
         }
 
+
         [HttpGet]
         public IActionResult DeleteExpense(int id)
         {
@@ -131,9 +135,9 @@ namespace Personal_Expense_Tracker.Controllers
             context.Transactions.Remove(harcamaSil);
             context.SaveChanges();
 
-            var islemler = context.Transactions.Include(x => x.Category).ToList();
+            //var islemler = context.Transactions.Include(x => x.Category).ToList();
 
-            return View("Index",islemler);
+            return RedirectToAction("Index");
         }
 
 
@@ -155,10 +159,7 @@ namespace Personal_Expense_Tracker.Controllers
             updateExpense.Name= transaction.Name;
             context.SaveChanges();
             
-          
-
-
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }

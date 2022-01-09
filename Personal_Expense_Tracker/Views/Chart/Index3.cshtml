@@ -1,5 +1,11 @@
 ﻿
 @{
+    ViewData["Title"] = "Index3";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
@@ -19,14 +25,13 @@
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
-                url: '@Url.Action("VisuliazeTransactionResult", "Chart")',
+                url: '@Url.Action("VisualizeTransactionResult2", "Chart")',
                 success: function (result) {
                     google.charts.load('current', {
                         'packages': ['corechart']
                     });
                     google.charts.setOnLoadCallback(function () {
-                        drawChart(result.giderler);
-                        drawChart2(result.gelirler);
+                        drawChart(result);
                     });
                 }
             });
@@ -34,19 +39,17 @@
 
         function drawChart(result) {
             var data = new google.visualization.DataTable();
-
             data.addColumn('string', 'Name');
             data.addColumn('number', 'Stoklar');
-
             var dataArray = [];
 
             $.each(result, function (i, obj) {
-                dataArray.push([obj.categoryname, obj.transactionamount]);
+                dataArray.push([obj.transactionname, obj.transactionamount]);
             });
             data.addRows(dataArray);
 
             var columnChartOptions = {
-                title: "Gider Tablosu",
+                title: "Ürün - Stok Grafiği",
                 width: 1000,
                 height: 400,
                 bar: { groupWidth: "20%" },
@@ -54,43 +57,12 @@
 
             var columnChart = new google.visualization.PieChart(document
                 .getElementById('Piechart_div'));
-               
+
             columnChart.draw(data, columnChartOptions);
         }
-                
-        
-        
-        
-        function drawChart2(result) {
-            var data2 = new google.visualization.DataTable();
-
-            data2.addColumn('string', 'Name');
-            data2.addColumn('number', 'Stoklar');
-
-            var dataArray2 = [];
-
-            $.each(result, function (i, obj) {
-                dataArray2.push([obj.categoryname, obj.transactionamount]);
-            });
-            data2.addRows(dataArray2);
-
-            var columnChartOptions2 = {
-                title: "Gelir Tablosu",
-                width: 1000,
-                height: 400,
-                bar: { groupWidth: "20%" },
-            };
-
-            var columnChart2 = new google.visualization.PieChart(document
-                .getElementById('Piechart2_div'));
-
-            columnChart2.draw(data2, columnChartOptions2);
-        }
-
     </script>
 </head>
 <body>
     <div id="Piechart_div"></div>
-    <div id="Piechart2_div"></div>
 </body>
 </html>

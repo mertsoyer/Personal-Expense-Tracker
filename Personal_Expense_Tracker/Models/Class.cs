@@ -8,7 +8,7 @@ namespace Personal_Expense_Tracker.Models
     public class Class
     {
 
-        public string CategoryName { get; set; }
-        public decimal TransactionAmount { get; set; }
+        public string categoryname { get; set; }
+        public decimal transactionamount { get; set; }
     }
 }
