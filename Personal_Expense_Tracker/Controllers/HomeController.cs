@@ -20,6 +20,8 @@ namespace Personal_Expense_Tracker.Controllers
 
         public IActionResult Index()
         {
+            //test
+
             return View();
         }
 
