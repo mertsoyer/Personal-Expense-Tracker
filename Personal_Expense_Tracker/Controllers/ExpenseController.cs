@@ -170,21 +170,54 @@ namespace Personal_Expense_Tracker.Controllers
         [HttpGet]
         public IActionResult UpdateExpense(int id)
         {
+            List<SelectListItem> kategoriler = (from x in context.Categories.Where(l => l.Type == "expense").ToList()
+                                                select new SelectListItem
+                                                {
 
+                                                    Text = x.Name,
+                                                    Value = x.CategoryId.ToString()
+                                                }
+
+                       ).ToList();
+
+
+            ViewBag.kategoriListele = kategoriler;
             var harcamaGuncelle = context.Transactions.Find(id);
-
 
             return View(harcamaGuncelle);
         }
 
         [HttpPost]
 
-        public IActionResult UpdateExpense (Transaction transaction)
+        public IActionResult UpdateExpense (Transaction updatedTransaction)
         {
-           var updateExpense= context.Transactions.Find(transaction.Id);
-            updateExpense.Name= transaction.Name;
+            var newCategory = context.Categories.Where(x => x.CategoryId == updatedTransaction.Category.CategoryId)
+                 .FirstOrDefault();
+
+            var transaction = context.Transactions.Where(l => l.Id == updatedTransaction.Id).FirstOrDefault();
+            transaction.Category = newCategory;
+            transaction.Amount = +updatedTransaction.Amount;
+            transaction.Date = updatedTransaction.Date;
+            transaction.UserId = updatedTransaction.UserId;
+            transaction.Name = updatedTransaction.Name;
+            context.Transactions.Update(transaction);
             context.SaveChanges();
-            
+
+
+            (from Category in context.Categories select Category).ToList();
+            List<SelectListItem> kategoriler = (from x in context.Categories.ToList()
+                                                select new SelectListItem
+                                                {
+
+                                                    Text = x.Name,
+                                                    Value = x.CategoryId.ToString()
+                                                }
+
+            ).ToList();
+
+
+            ViewBag.kategoriListele = kategoriler;
+
             return RedirectToAction("Index");
         }
     }

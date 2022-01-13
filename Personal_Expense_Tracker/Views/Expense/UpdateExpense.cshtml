@@ -9,11 +9,14 @@
 
 <form asp-action="UpdateExpense" asp-controller="Expense" method="post">
 
+   
     <input type="hidden" asp-for="Id" />
     <input type="text" asp-for="Name" />
     <input type="text" asp-for="Amount" />
-    <input type="text" asp-for="Category" />
-    
+    <input type="date" asp-for="Date" placeholder="Tarih" />
+
+     @Html.DropDownListFor(x => x.Category.CategoryId, (List<SelectListItem>
+       )ViewBag.kategoriListele, new { @class = "form-control" })
     <button>Güncelle</button>
 
 
