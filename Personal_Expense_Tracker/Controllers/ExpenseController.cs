@@ -52,15 +52,17 @@ namespace Personal_Expense_Tracker.Controllers
             if (btnsearch=="thisWeek")
             {
                 var monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
-                
-                //transactionListViewModel.
-                //transactionListViewModel.StartDate = DateTime;
-                //transactionListViewModel.EndDate= DateTime.Today;
+
+               
+                transactionListViewModel.StartDate = monday;
+                transactionListViewModel.EndDate = DateTime.Today;
             }
             if (btnsearch== "thisMounth")
             {
-                //transactionListViewModel.StartDate=DateTime.;
-                //transactionListViewModel.EndDate=DateTime.Today
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+                transactionListViewModel.StartDate = firstDayOfMonth;
+                transactionListViewModel.EndDate = DateTime.Today;
             }
             if (btnsearch=="allTime")
             {
