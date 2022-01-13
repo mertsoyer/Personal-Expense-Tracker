@@ -1,0 +1,18 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "UpdateCategory";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+<h1>Kategori Güncelleme</h1>
+
+<form asp-action="UpdateCategory" asp-controller="Category" method="post">
+
+    <input type="hidden" asp-for="CategoryId"/>
+    <input type="text" asp-for="Name" />
+
+    <button>Güncelle</button>
+
+
+</form>
+

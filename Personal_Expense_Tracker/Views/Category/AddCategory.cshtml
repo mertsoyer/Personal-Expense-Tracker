@@ -1,0 +1,31 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "AddCategory";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+<h1>AddCategory</h1>
+
+
+<form asp-action="AddCategory" asp-controller="Category" method="post">
+
+
+    <input type="text" asp-for="Name" placeholder=" Name" />
+    <input type="text" asp-for="Type" placeholder=" Surname" />
+<select>
+    <option name="option" value="income">Gelir</option>
+    <option name="option" value="expense">Gider</option>
+
+</select>
+
+    <!-- #region HTML Helper ile, Controller üzerinden ayrıştırdığımız datayı view'de dropdown ile listeleme -->
+   @* 
+    @Html.DropDownListFor(x => x.Type, (List<SelectListItem>
+        )ViewBag.kategoriler, new { @class = "form-control" })
+*@
+    <!-- #endregion -->
+    @*<select asp-for="Departments.Id" class="form-control" asp-items="@(new SelectList(ViewBag.departmanListele,"Id","Name"))">
+        <option value="">Please choose department</option>
+    </select>*@
+    <button class="btn btn-success">Add</button>
+</form>

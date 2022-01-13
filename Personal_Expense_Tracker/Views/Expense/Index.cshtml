@@ -4,14 +4,22 @@
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Giderler</h1>
 
 <form asp-action="Index" asp-controller="Expense" method="post">
 
     <input type="date" id="txtSelectedDate" name="startDate" />
     <input type="date" id="txtSelectedDate" name="endDate" />
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Tarihe Göre Filtreleme" />
+@*    <input type="submit" name="today" value="Bugün" />
+    <input type="submit" name="thisWeek" value="Bu Hafta" />
+    <input type="submit" name="thisMounth" value="Bu Ay" />
+    <input type="submit" name="allTime" value="Tüm Zamanlar" />*@
 
+    <button type="submit" name="btnsearch" value="today">Bugün</button>
+    <button type="submit" name="btnsearch" value="thisWeek">Bu Hafta</button>
+    <button type="submit" name="btnsearch" value="thisMounth">Bu Ay</button>
+    <button type="submit" name="btnsearch" value="allTime">Tüm Zamanlar</button>
 
     <script type="text/javascript">
         $(function () {

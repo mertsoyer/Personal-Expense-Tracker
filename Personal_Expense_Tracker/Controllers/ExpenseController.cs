@@ -40,12 +40,36 @@ namespace Personal_Expense_Tracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index([FromForm] TransactionListViewModel transactionListViewModel)
+        public IActionResult Index([FromForm] TransactionListViewModel transactionListViewModel,string btnsearch)
         {
             var id = _userManager.GetUserId(User);
 
+            if (btnsearch=="today")
+            {
+                transactionListViewModel.StartDate = DateTime.Today;
+                transactionListViewModel.EndDate = DateTime.Today;
+            }
+            if (btnsearch=="thisWeek")
+            {
+                var monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
+                
+                //transactionListViewModel.
+                //transactionListViewModel.StartDate = DateTime;
+                //transactionListViewModel.EndDate= DateTime.Today;
+            }
+            if (btnsearch== "thisMounth")
+            {
+                //transactionListViewModel.StartDate=DateTime.;
+                //transactionListViewModel.EndDate=DateTime.Today
+            }
+            if (btnsearch=="allTime")
+            {
+                transactionListViewModel.StartDate=default(DateTime);
+                transactionListViewModel.EndDate = default(DateTime);
+            }
             
             var query = context.Transactions.Include(x => x.Category).Where(l => l.UserId == id && l.Amount < 0);
+           
             if (transactionListViewModel.StartDate!=default(DateTime))
             {
                 query = query.Where(x=> x.Date >= transactionListViewModel.StartDate);

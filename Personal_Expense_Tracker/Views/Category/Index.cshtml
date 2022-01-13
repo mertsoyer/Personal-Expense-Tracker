@@ -1,0 +1,64 @@
+﻿@model List<Category>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+
+@*<form asp-action="Index" asp-controller="Category" method="post">
+
+    <input type="text" asp-for="Name" placeholder="Kategori" />
+
+    <button>Departman Ekle</button>
+
+    </form>
+*@
+<a href="/category/AddCategory" class="btn btn-info">Yeni Kategori Ekle</a>
+
+<h1>Gider Kategorileri</h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Kategori Adı</th>
+        <th>Güncelle</th>
+        <th>Sil</th>
+    </tr>
+    @foreach (var category in Model)
+    {
+        <tr>
+            @if (category.Type == "expense")
+            {
+                <td>@category.Name</td>
+                <td><a href="/category/UpdateCategory/@category.CategoryId" class="btn btn-success">Güncelle</a></td>
+                <td><a href="/category/DeleteCategory/@category.CategoryId" class="btn btn-danger">Sil</a></td>
+            }
+
+        </tr>
+    }
+</table>
+
+</br>
+
+
+<h1>Gelir Kategorileri</h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Kategori Adı</th>
+        <th>Güncelle</th>
+        <th>Sil</th>
+    </tr>
+    @foreach (var category in Model)
+    {
+        <tr>
+            @if (category.Type == "income")
+            {
+                <td>@category.Name</td>
+                <td><a href="/category/UpdateCategory/@category.CategoryId" class="btn btn-success">Güncelle</a></td>
+                <td><a href="/category/DeleteCategory/@category.CategoryId" class="btn btn-danger">Sil</a></td>
+            }
+
+        </tr>
+    }
+</table>
+
