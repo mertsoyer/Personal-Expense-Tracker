@@ -101,20 +101,61 @@ namespace Personal_Expense_Tracker.Controllers
         [HttpGet]
         public IActionResult UpdateIncome(int id)
         {
-            var gelirGuncelle=context.Transactions.Find(id);
+            List<SelectListItem> kategoriler = (from x in context.Categories.Where(l => l.Type == "income").ToList()
+                                                select new SelectListItem
+                                                {
+
+                                                    Text = x.Name,
+                                                    Value = x.CategoryId.ToString()
+                                                }
+
+            ).ToList();
 
 
-            return View(gelirGuncelle);
+            ViewBag.kategoriListele = kategoriler;
+            var harcamaGuncelle = context.Transactions.Find(id);
+
+
+            return View(harcamaGuncelle);
         }
 
 
         [HttpPost]
-        public IActionResult UpdateIncome(Transaction transaction)
+        public IActionResult UpdateIncome(Transaction updatedTransaction)
         {
-            var gelirGuncelle=context.Transactions.Find(transaction.Id);
-            gelirGuncelle.Amount = transaction.Amount;
-            gelirGuncelle.Name = transaction.Name;  
+            var newCategory = context.Categories.Where(x => x.CategoryId == updatedTransaction.Category.CategoryId)
+                .FirstOrDefault();
+
+            var transaction = context.Transactions.Where(l=>l.Id == updatedTransaction.Id).FirstOrDefault();
+            transaction.Category = newCategory;
+            transaction.Amount = +updatedTransaction.Amount;
+            transaction.Date = updatedTransaction.Date;
+            transaction.UserId = updatedTransaction.UserId;
+            transaction.Name = updatedTransaction.Name;
+            context.Transactions.Update(transaction);
             context.SaveChanges();
+
+
+            (from Category in context.Categories select Category).ToList();
+            List<SelectListItem> kategoriler = (from x in context.Categories.ToList()
+                                                select new SelectListItem
+                                                {
+
+                                                    Text = x.Name,
+                                                    Value = x.CategoryId.ToString()
+                                                }
+
+            ).ToList();
+
+
+            ViewBag.kategoriListele = kategoriler;
+            //var gelirGuncelle=context.Transactions.Find(transaction.Id);
+            //gelirGuncelle.Amount = transaction.Amount;
+            //gelirGuncelle.Name = transaction.Name;
+            //gelirGuncelle.Category= transaction.Category;
+
+
+            //context.SaveChanges();
 
             return RedirectToAction("Index");
         }

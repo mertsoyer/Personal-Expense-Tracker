@@ -9,9 +9,11 @@
 
 <form asp-action="UpdateExpense" asp-controller="Expense" method="post">
 
-    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="Id" />
     <input type="text" asp-for="Name" />
-
+    <input type="text" asp-for="Amount" />
+    <input type="text" asp-for="Category" />
+    
     <button>Güncelle</button>
 
 

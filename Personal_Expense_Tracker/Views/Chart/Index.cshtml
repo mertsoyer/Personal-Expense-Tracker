@@ -5,6 +5,32 @@
 }
 
 <h1>Raporlar</h1>
+<form asp-action="Index" asp-controller="Expense" method="post">
+
+    <input type="date" id="txtSelectedDate" name="startDate" />
+    <input type="date" id="txtSelectedDate" name="endDate" />
+    <input type="submit" value="Tarihe Göre Filtreleme" />
+@*    <input type="submit" name="today" value="Bugün" />
+    <input type="submit" name="thisWeek" value="Bu Hafta" />
+    <input type="submit" name="thisMounth" value="Bu Ay" />
+    <input type="submit" name="allTime" value="Tüm Zamanlar" />*@
+
+    <button type="submit" name="btnsearch" value="today">Bugün</button>
+    <button type="submit" name="btnsearch" value="thisWeek">Bu Hafta</button>
+    <button type="submit" name="btnsearch" value="thisMounth">Bu Ay</button>
+    <button type="submit" name="btnsearch" value="allTime">Tüm Zamanlar</button>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#txtSelectedDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "tr"
+            });
+        });
+    </script>
+</form>
 
 <!DOCTYPE html>
 <html lang="en">

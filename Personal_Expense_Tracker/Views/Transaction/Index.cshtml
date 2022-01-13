@@ -1,0 +1,79 @@
+﻿@model TransactionAllListViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+<h1>Gelirler Genel Görünüm</h1>
+
+<form asp-action="Index" asp-controller="Transaction" method="post">
+
+    <input type="date" id="txtSelectedDate" name="startDate" />
+    <input type="date" id="txtSelectedDate" name="endDate" />
+    <input type="submit" value="Tarihe Göre Filtreleme" />
+@*    <input type="submit" name="today" value="Bugün" />
+    <input type="submit" name="thisWeek" value="Bu Hafta" />
+    <input type="submit" name="thisMounth" value="Bu Ay" />
+    <input type="submit" name="allTime" value="Tüm Zamanlar" />*@
+
+    <button type="submit" name="btnsearch" value="today">Bugün</button>
+    <button type="submit" name="btnsearch" value="thisWeek">Bu Hafta</button>
+    <button type="submit" name="btnsearch" value="thisMounth">Bu Ay</button>
+    <button type="submit" name="btnsearch" value="allTime">Tüm Zamanlar</button>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#txtSelectedDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "tr"
+            });
+        });
+    </script>
+</form>
+<table class="table table-bordered">
+    <tr>
+        <th>Gelir Adı</th>
+        <th>Gelir Tutarı</th>
+        <th>Tarih</th>
+    </tr>
+    @foreach (var transaction in Model.Incomes)
+    {
+        <tr>
+                 <td>@transaction.Name</td>
+                <td>@transaction.Amount</td>
+                <td>@transaction.Date.ToString("MM/dd/yyyy")</td>
+        </tr>
+    }
+
+    <tr>
+        <td>Toplam</td>
+        <td>@Model.IncomeSum</td>
+    </tr>
+</table>
+
+<br />
+
+<h1>Giderler Genel Görünüm</h1>
+<table class="table table-bordered">
+    <tr>
+        <th>Gelir Adı</th>
+        <th>Gelir Tutarı</th>
+        <th>Tarih</th>
+    </tr>
+    @foreach (var transaction in Model.Expenses)
+    {
+        <tr>
+                <td>@transaction.Name</td>
+                <td>@transaction.Amount</td>
+                <td>@transaction.Date.ToString("MM/dd/yyyy")</td>
+
+        </tr>
+        
+    }
+    <tr>
+        <td>Toplam</td>
+        <td>@Model.ExpenseSum</td>
+    </tr>
+</table>

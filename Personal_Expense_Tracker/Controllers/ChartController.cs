@@ -40,6 +40,8 @@ namespace Personal_Expense_Tracker.Controllers
             List<Class> gelirler = new List<Class>();
             List<Class> giderler = new List<Class>();
             var id = _userManager.GetUserId(User);
+
+
             var giderler2 = context.Transactions.Include(x => x.Category).Where(l => l.UserId == id && l.Amount < 0).ToList();
 
             var groupedgiderler = giderler2.GroupBy(x => x.Category.Name).ToList();
@@ -115,5 +117,7 @@ namespace Personal_Expense_Tracker.Controllers
             }
             return cs2;
         }
+
+        
     }
 }
