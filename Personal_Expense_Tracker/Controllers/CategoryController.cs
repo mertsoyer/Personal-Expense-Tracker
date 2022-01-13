@@ -47,14 +47,13 @@ namespace Personal_Expense_Tracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddCategory(Category category,string option)
+        public IActionResult AddCategory([FromForm] Category category)
         {
-            if (option == "income")
-            {
-                context.Categories.Add(category);
-                context.SaveChanges();
 
-            }
+            context.Categories.Add(category);
+            context.SaveChanges();
+
+
             return RedirectToAction("Index");
         }
 
