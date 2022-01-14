@@ -12,57 +12,35 @@
 
 <h1>Index</h1>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Result Visualization</title>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <html>
+  <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json",
-                url: '@Url.Action("VisualizeTransactionResult2", "Chart")',
-                success: function (result) {
-                    google.charts.load('current', {
-                        'packages': ['corechart']
-                    });
-                    google.charts.setOnLoadCallback(function () {
-                        drawChart(result);
-                    });
-                }
-            });
-        });
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart(result) {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Name');
-            data.addColumn('number', 'Stoklar');
-            var dataArray = [];
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
 
-            $.each(result, function (i, obj) {
-                dataArray.push([obj.transactionname, obj.transactionamount]);
-            });
-            data.addRows(dataArray);
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
 
-            var columnChartOptions = {
-                title: "Ürün - Stok Grafiği",
-                width: 1000,
-                height: 400,
-                bar: { groupWidth: "20%" },
-            };
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
-            var columnChart = new google.visualization.PieChart(document
-                .getElementById('Piechart_div'));
-
-            columnChart.draw(data, columnChartOptions);
-        }
+        chart.draw(data, options);
+      }
     </script>
-</head>
-<body>
-    <div id="Piechart_div"></div>
-</body>
+  </head>
+  <body>
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+  </body>
 </html>

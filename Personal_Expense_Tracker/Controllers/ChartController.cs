@@ -23,9 +23,68 @@ namespace Personal_Expense_Tracker.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index([FromForm] TransactionListViewModel transactionListViewModel, string btnsearch)
+        {
+
+            var id = _userManager.GetUserId(User);
+
+            if (btnsearch == "today")
+            {
+                transactionListViewModel.StartDate = DateTime.Today;
+                transactionListViewModel.EndDate = DateTime.Today;
+            }
+            if (btnsearch == "thisWeek")
+            {
+                var monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + (int)DayOfWeek.Monday);
+
+
+                transactionListViewModel.StartDate = monday;
+                transactionListViewModel.EndDate = DateTime.Today;
+            }
+            if (btnsearch == "thisMounth")
+            {
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+                transactionListViewModel.StartDate = firstDayOfMonth;
+                transactionListViewModel.EndDate = DateTime.Today;
+            }
+            if (btnsearch == "allTime")
+            {
+                transactionListViewModel.StartDate = default(DateTime);
+                transactionListViewModel.EndDate = default(DateTime);
+            }
+
+            var query = context.Transactions.Include(x => x.Category).Where(l => l.UserId == id && l.Amount < 0);
+
+            if (transactionListViewModel.StartDate != default(DateTime))
+            {
+                query = query.Where(x => x.Date >= transactionListViewModel.StartDate);
+            }
+            if (transactionListViewModel.EndDate != default(DateTime))
+            {
+                query = query.Where(x => x.Date <= transactionListViewModel.EndDate);
+
+            }
+            var islemler = query.ToList();
+            foreach (var item in islemler)
+            {
+                item.FormatedDate = item.Date.ToShortDateString();
+            }
+
+            transactionListViewModel.Transactions = islemler;
+
+
+            transactionListViewModel.TransactionSum = islemler.Sum(x => x.Amount);
+
+            return View(transactionListViewModel);
+           
         }
 
 
@@ -78,22 +137,7 @@ namespace Personal_Expense_Tracker.Controllers
         {
             return View();
         }
-        //public List<Class>TransactionList()
-
-        //{
-
-        //    List<Class> class2 =new List<Class>();
-        //    using (var context2 = new ApplicationDbContext())
-        //    {
-        //        class2 = context2.Transactions.Select(x => new Class
-        //        {
-        //            TransactionAmount = x.Amount,
-        //            CategoryName = x.Category.ToString()
-        //        }).ToList();
-
-        //        return class2;
-        //    }
-        //}
+    
 
         public IActionResult Index3()
         {
