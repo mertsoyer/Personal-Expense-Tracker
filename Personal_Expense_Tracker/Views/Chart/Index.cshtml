@@ -1,19 +1,18 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
 <h1>Raporlar</h1>
-<form asp-action="Index" asp-controller="Chart" method="post">
+<form id="charts" asp-action="Index" asp-controller="Chart" method="post">
 
     <input type="date" id="txtSelectedDate" name="startDate" />
-    <input type="date" id="txtSelectedDate" name="endDate" />
+    <input type="date" id="txtSelectedDate2" name="endDate" />
     <input type="submit" value="Tarihe Göre Filtreleme" />
-@*    <input type="submit" name="today" value="Bugün" />
-    <input type="submit" name="thisWeek" value="Bu Hafta" />
-    <input type="submit" name="thisMounth" value="Bu Ay" />
-    <input type="submit" name="allTime" value="Tüm Zamanlar" />*@
+    @*    <input type="submit" name="today" value="Bugün" />
+        <input type="submit" name="thisWeek" value="Bu Hafta" />
+        <input type="submit" name="thisMounth" value="Bu Ay" />
+        <input type="submit" name="allTime" value="Tüm Zamanlar" />*@
 
     <button type="submit" name="btnsearch" value="today">Bugün</button>
     <button type="submit" name="btnsearch" value="thisWeek">Bu Hafta</button>
@@ -28,23 +27,35 @@
                 format: "dd/mm/yyyy",
                 language: "tr"
             });
+
+             $('#txtSelectedDate2').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "tr"
+            });
         });
     </script>
+
 </form>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Result Visualization</title>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
+
+<script>
+    $(document).ready(function () {
+        getCharts();
+
+        $( "#charts" ).submit(function( event ) {
+          event.preventDefault();
+          getCharts();
+        });
+
+        function getCharts() {
             $.ajax({
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
+                //data: JSON.stringify($('#charts').serialize()),
+                data: $('#charts').serialize(),
                 url: '@Url.Action("VisuliazeTransactionResult", "Chart")',
                 success: function (result) {
                     google.charts.load('current', {
@@ -56,67 +67,64 @@
                     });
                 }
             });
+        }
+
+    });
+
+    function drawChart(result) {
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('string', 'Name');
+        data.addColumn('number', 'Stoklar');
+
+        var dataArray = [];
+
+        $.each(result, function (i, obj) {
+            dataArray.push([obj.categoryname, obj.transactionamount]);
         });
+        data.addRows(dataArray);
 
-        function drawChart(result) {
-            var data = new google.visualization.DataTable();
+        var columnChartOptions = {
+            title: "Gider Tablosu",
+            width: 1000,
+            height: 400,
+            bar: { groupWidth: "20%" },
+        };
 
-            data.addColumn('string', 'Name');
-            data.addColumn('number', 'Stoklar');
+        var columnChart = new google.visualization.PieChart(document
+            .getElementById('Piechart_div'));
 
-            var dataArray = [];
+        columnChart.draw(data, columnChartOptions);
+    }
 
-            $.each(result, function (i, obj) {
-                dataArray.push([obj.categoryname, obj.transactionamount]);
-            });
-            data.addRows(dataArray);
 
-            var columnChartOptions = {
-                title: "Gider Tablosu",
-                width: 1000,
-                height: 400,
-                bar: { groupWidth: "20%" },
-            };
+    function drawChart2(result) {
+        var data2 = new google.visualization.DataTable();
 
-            var columnChart = new google.visualization.PieChart(document
-                .getElementById('Piechart_div'));
-               
-            columnChart.draw(data, columnChartOptions);
-        }
-                
-        
-        
-        
-        function drawChart2(result) {
-            var data2 = new google.visualization.DataTable();
+        data2.addColumn('string', 'Name');
+        data2.addColumn('number', 'Stoklar');
 
-            data2.addColumn('string', 'Name');
-            data2.addColumn('number', 'Stoklar');
+        var dataArray2 = [];
 
-            var dataArray2 = [];
+        $.each(result, function (i, obj) {
+            dataArray2.push([obj.categoryname, obj.transactionamount]);
+        });
+        data2.addRows(dataArray2);
 
-            $.each(result, function (i, obj) {
-                dataArray2.push([obj.categoryname, obj.transactionamount]);
-            });
-            data2.addRows(dataArray2);
+        var columnChartOptions2 = {
+            title: "Gelir Tablosu",
+            width: 1000,
+            height: 400,
+            bar: { groupWidth: "20%" },
+        };
 
-            var columnChartOptions2 = {
-                title: "Gelir Tablosu",
-                width: 1000,
-                height: 400,
-                bar: { groupWidth: "20%" },
-            };
+        var columnChart2 = new google.visualization.PieChart(document
+            .getElementById('Piechart2_div'));
 
-            var columnChart2 = new google.visualization.PieChart(document
-                .getElementById('Piechart2_div'));
+        columnChart2.draw(data2, columnChartOptions2);
+    }
 
-            columnChart2.draw(data2, columnChartOptions2);
-        }
+</script>
 
-    </script>
-</head>
-<body>
-    <div id="Piechart_div"></div>
-    <div id="Piechart2_div"></div>
-</body>
-</html>
+<div id="Piechart_div"></div>
+<div id="Piechart2_div"></div>
