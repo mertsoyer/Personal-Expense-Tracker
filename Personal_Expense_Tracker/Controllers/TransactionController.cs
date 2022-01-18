@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Personal_Expense_Tracker.Data;
@@ -8,6 +9,7 @@ using System.Linq;
 
 namespace Personal_Expense_Tracker.Controllers
 {
+    [Authorize]
     public class TransactionController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();

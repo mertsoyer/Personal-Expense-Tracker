@@ -9,11 +9,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Personal_Expense_Tracker.Controllers
 {
 
-
+    [Authorize]
     public class ChartController : Controller
 
     {
@@ -95,7 +96,7 @@ namespace Personal_Expense_Tracker.Controllers
         }
 
 
-        public IActionResult VisuliazeTransactionResult(TransactionListViewModel transactionListViewModel, string btnsearch)
+        public IActionResult VisuliazeTransactionResult([FromForm]TransactionListViewModel transactionListViewModel, string btnsearch, int CategoryId)
         {
             if (transactionListViewModel == null) transactionListViewModel = new TransactionListViewModel();
             return Json(TransactionListWithFilter(transactionListViewModel, btnsearch));

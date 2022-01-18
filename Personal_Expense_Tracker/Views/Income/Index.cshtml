@@ -4,57 +4,81 @@
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
-<h1>Gelirler</h1>
+
 <form asp-action="Index" asp-controller="Income" method="post">
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1 class="card-title">Gelirler</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <input type="date" class="form-control" id="txtSelectedDate" name="startDate" />
+                                </div>
+                                <div class="col-4">
+                                    <input type="date" class="form-control" id="txtSelectedDate" name="endDate" />
+                                </div>
+                                <div class="col-4">
+                                    <input type="submit" class="btn btn-success btn-sm" value="Tarihe Göre Filtreleme" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-success btn-sm" name="btnsearch" value="today">Bugün</button>
+                            <button type="submit" class="btn btn-success btn-sm ml-2" name="btnsearch" value="thisWeek">Bu Hafta</button>
+                            <button type="submit" class="btn btn-success btn-sm ml-2" name="btnsearch" value="thisMounth">Bu Ay</button>
+                            <button type="submit" class="btn btn-success btn-sm ml-2" name="btnsearch" value="allTime">Tüm Zamanlar</button>
+                        </div>
+                    </div>
 
-    <input type="date" id="txtSelectedDate" name="startDate" />
-    <input type="date" id="txtSelectedDate" name="endDate" />
-    <input type="submit" value="Tarihe Göre Filtreleme" />
-@*    <input type="submit" name="today" value="Bugün" />
-    <input type="submit" name="thisWeek" value="Bu Hafta" />
-    <input type="submit" name="thisMounth" value="Bu Ay" />
-    <input type="submit" name="allTime" value="Tüm Zamanlar" />*@
+                </div>
+                <div class="col-12 mt-3">
+                    <a href="/income/AddIncome" class="btn btn-info">Gelir Ekle</a>
+                </div>
+                <div class="col-12 mt-3">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Gelir</th>
+                            <th>Tarih</th>
+                            <th>Tutar</th>
+                            <th>Kategori</th>
+                            <th>Güncelle</th>
+                            <th>Sil</th>
 
-    <button type="submit" name="btnsearch" value="today">Bugün</button>
-    <button type="submit" name="btnsearch" value="thisWeek">Bu Hafta</button>
-    <button type="submit" name="btnsearch" value="thisMounth">Bu Ay</button>
-    <button type="submit" name="btnsearch" value="allTime">Tüm Zamanlar</button>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.FormatedDate</td>
+                                <td>@item.Amount</td>
+                                <td>@item.Category.Name</td>
+                                <td><a href="/income/UpdateIncome/@item.Id" class="btn btn-success">Güncelle</a></td>
+                                <td><a href="/income/DeleteIncome/@item.Id" class="btn btn-danger">Sil</a></td>
 
-    <script type="text/javascript">
-        $(function () {
-            $('#txtSelectedDate').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                format: "dd/mm/yyyy",
-                language: "tr"
-            });
-        });
-    </script>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </form>
 
-<a href="/income/AddIncome" class="btn btn-info">Gelir Ekle</a>
-<br />
-<br />
-<table class="table table-bordered">
-    <tr>
-        <th>Gelir</th>
-        <th>Tarih</th>
-        <th>Tutar</th>
-        <th>Kategori</th>
-        <th>Güncelle</th>
-        <th>Sil</th>
+<script type="text/javascript">
+    $(function () {
+        $('#txtSelectedDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            format: "dd/mm/yyyy",
+            language: "tr"
+        });
+    });
+</script>
 
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.FormatedDate</td>
-            <td>@item.Amount</td>
-            <td>@item.Category.Name</td>
-             <td><a href="/income/UpdateIncome/@item.Id" class="btn btn-success">Güncelle</a></td>
-            <td><a href="/income/DeleteIncome/@item.Id" class="btn btn-danger">Sil</a></td>
-
-        </tr>
-    }
-</table>

@@ -36,7 +36,7 @@ namespace Personal_Expense_Tracker
             services.AddControllersWithViews();
             services.AddMvc().AddRazorPagesOptions(options => {
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "/Account/Login");
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

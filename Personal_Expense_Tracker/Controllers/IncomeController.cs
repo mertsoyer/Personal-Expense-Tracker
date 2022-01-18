@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace Personal_Expense_Tracker.Controllers
 {
+    [Authorize]
+
     public class IncomeController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
@@ -106,7 +109,7 @@ namespace Personal_Expense_Tracker.Controllers
         [HttpGet]
         public IActionResult AddIncome()
         {
-
+            var id = _userManager.GetUserId(User);
             List<SelectListItem> kategoriler = (from x in context.Categories.Where(l => l.Type == "income").ToList()
                                                 select new SelectListItem
                                                 {
@@ -189,7 +192,7 @@ namespace Personal_Expense_Tracker.Controllers
             transaction.Category = newCategory;
             transaction.Amount = +updatedTransaction.Amount;
             transaction.Date = updatedTransaction.Date;
-            transaction.UserId = updatedTransaction.UserId;
+            //transaction.UserId = updatedTransaction.UserId;
             transaction.Name = updatedTransaction.Name;
             context.Transactions.Update(transaction);
             context.SaveChanges();

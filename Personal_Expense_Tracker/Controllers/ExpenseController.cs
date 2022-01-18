@@ -8,9 +8,11 @@ using Personal_Expense_Tracker.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Personal_Expense_Tracker.Controllers
 {
+    [Authorize]
     public class ExpenseController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
@@ -198,7 +200,7 @@ namespace Personal_Expense_Tracker.Controllers
             transaction.Category = newCategory;
             transaction.Amount = +updatedTransaction.Amount;
             transaction.Date = updatedTransaction.Date;
-            transaction.UserId = updatedTransaction.UserId;
+            //transaction.UserId = updatedTransaction.UserId;
             transaction.Name = updatedTransaction.Name;
             context.Transactions.Update(transaction);
             context.SaveChanges();

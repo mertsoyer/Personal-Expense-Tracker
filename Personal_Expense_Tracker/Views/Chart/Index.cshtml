@@ -6,8 +6,9 @@
 <h1>Raporlar</h1>
 <form id="charts" asp-action="Index" asp-controller="Chart" method="post">
 
-    <input type="date" id="txtSelectedDate" name="startDate" />
-    <input type="date" id="txtSelectedDate2" name="endDate" />
+    <input type="date" id="txtSelectedDate" name="StartDate" />
+    <input type="date" id="txtSelectedDate2" name="EndDate" />
+
     <input type="submit" value="Tarihe Göre Filtreleme" />
     @*    <input type="submit" name="today" value="Bugün" />
         <input type="submit" name="thisWeek" value="Bu Hafta" />
@@ -19,43 +20,56 @@
     <button type="submit" name="btnsearch" value="thisMounth">Bu Ay</button>
     <button type="submit" name="btnsearch" value="allTime">Tüm Zamanlar</button>
 
-    <script type="text/javascript">
-        $(function () {
-            $('#txtSelectedDate').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                format: "dd/mm/yyyy",
-                language: "tr"
-            });
+    @*<script type="text/javascript">
+            $(function () {
+                $('#txtSelectedDate').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    format: "dd/mm/yyyy",
+                    language: "tr"
+                });
 
-             $('#txtSelectedDate2').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                format: "dd/mm/yyyy",
-                language: "tr"
+                 $('#txtSelectedDate2').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    format: "dd/mm/yyyy",
+                    language: "tr"
+                });
             });
-        });
-    </script>
+        </script>*@
 
 </form>
 
 
 <script>
     $(document).ready(function () {
-        getCharts();
 
-        $( "#charts" ).submit(function( event ) {
-          event.preventDefault();
-          getCharts();
+        getCharts("");
+
+        $(document).on("click", ":submit", function (e) {
+
+            var buttonString = "";
+            var buttonName = $(this).attr("name");
+            var buttonValue = $(this).val();
+
+            if (buttonName == "btnsearch") {
+                buttonString = buttonName + "=" + buttonValue + "&";
+            }
+          
+            event.preventDefault();
+            getCharts(buttonString);
         });
 
-        function getCharts() {
+
+        function getCharts(buttonString) {
+
+            var formData = buttonString + $('#charts').serialize()
+
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                contentType: "application/json",
-                //data: JSON.stringify($('#charts').serialize()),
-                data: $('#charts').serialize(),
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: formData,
                 url: '@Url.Action("VisuliazeTransactionResult", "Chart")',
                 success: function (result) {
                     google.charts.load('current', {
@@ -67,6 +81,16 @@
                     });
                 }
             });
+
+
+            @*var valdata = $("#charts").serialize();
+            $.ajax({
+                url: '@Url.Action("VisuliazeTransactionResult2", "Chart")',
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: valdata
+            });*@
         }
 
     });

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Personal_Expense_Tracker.Data;
@@ -8,6 +9,7 @@ using System.Linq;
 
 namespace Personal_Expense_Tracker.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();

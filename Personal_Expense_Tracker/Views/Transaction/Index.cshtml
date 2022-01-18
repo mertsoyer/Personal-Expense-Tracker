@@ -4,76 +4,109 @@
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
-<h1>Gelirler Genel Görünüm</h1>
+
 
 <form asp-action="Index" asp-controller="Transaction" method="post">
+    <div class="card mt-3">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="card-title">Gelirler Genel Görünüm</h1>
+                </div>
+            </div>
+        </div>
+        <iv class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <input type="date" class="form-control" id="txtSelectedDate" name="startDate" />
+                                </div>
+                                <div class="col-4">
+                                    <input type="date" class="form-control" id="txtSelectedDate" name="endDate" />
+                                </div>
+                                <div class="col-4">
+                                    <input type="submit" class="btn btn-success btn-sm" value="Tarihe Göre Filtreleme" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-success btn-sm" name="btnsearch" value="today">Bugün</button>                                                          
+                            <button type="submit" class="btn btn-success btn-sm ml-2" name="btnsearch" value="thisWeek">Bu Hafta</button>                                                  
+                            <button type="submit" class="btn btn-success btn-sm ml-2" name="btnsearch" value="thisMounth">Bu Ay</button>                                                    
+                            <button type="submit" class="btn btn-success btn-sm ml-2" name="btnsearch" value="allTime">Tüm Zamanlar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>Gelir Adı</th>
+                            <th>Gelir Tutarı</th>
+                            <th>Tarih</th>
+                        </tr>
+                        @foreach (var transaction in Model.Incomes)
+                        {
+                            <tr>
+                                <td>@transaction.Name</td>
+                                <td>@transaction.Amount</td>
+                                <td>@transaction.Date.ToString("MM/dd/yyyy")</td>
+                            </tr>
+                        }
 
-    <input type="date" id="txtSelectedDate" name="startDate" />
-    <input type="date" id="txtSelectedDate" name="endDate" />
-    <input type="submit" value="Tarihe Göre Filtreleme" />
-@*    <input type="submit" name="today" value="Bugün" />
-    <input type="submit" name="thisWeek" value="Bu Hafta" />
-    <input type="submit" name="thisMounth" value="Bu Ay" />
-    <input type="submit" name="allTime" value="Tüm Zamanlar" />*@
+                        <tr>
+                            <td>Toplam</td>
+                            <td>@Model.IncomeSum</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </iv>
+    </div>
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1 class="card-title">Giderler Genel Görünüm</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>Gelir Adı</th>
+                            <th>Gelir Tutarı</th>
+                            <th>Tarih</th>
+                        </tr>
+                        @foreach (var transaction in Model.Expenses)
+                        {
+                            <tr>
+                                <td>@transaction.Name</td>
+                                <td>@transaction.Amount</td>
+                                <td>@transaction.Date.ToString("MM/dd/yyyy")</td>
 
-    <button type="submit" name="btnsearch" value="today">Bugün</button>
-    <button type="submit" name="btnsearch" value="thisWeek">Bu Hafta</button>
-    <button type="submit" name="btnsearch" value="thisMounth">Bu Ay</button>
-    <button type="submit" name="btnsearch" value="allTime">Tüm Zamanlar</button>
+                            </tr>
 
-    <script type="text/javascript">
-        $(function () {
-            $('#txtSelectedDate').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                format: "dd/mm/yyyy",
-                language: "tr"
-            });
-        });
-    </script>
+                        }
+                        <tr>
+                            <td>Toplam</td>
+                            <td>@Model.ExpenseSum</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </form>
-<table class="table table-bordered">
-    <tr>
-        <th>Gelir Adı</th>
-        <th>Gelir Tutarı</th>
-        <th>Tarih</th>
-    </tr>
-    @foreach (var transaction in Model.Incomes)
-    {
-        <tr>
-                 <td>@transaction.Name</td>
-                <td>@transaction.Amount</td>
-                <td>@transaction.Date.ToString("MM/dd/yyyy")</td>
-        </tr>
-    }
 
-    <tr>
-        <td>Toplam</td>
-        <td>@Model.IncomeSum</td>
-    </tr>
-</table>
-
-<br />
-
-<h1>Giderler Genel Görünüm</h1>
-<table class="table table-bordered">
-    <tr>
-        <th>Gelir Adı</th>
-        <th>Gelir Tutarı</th>
-        <th>Tarih</th>
-    </tr>
-    @foreach (var transaction in Model.Expenses)
-    {
-        <tr>
-                <td>@transaction.Name</td>
-                <td>@transaction.Amount</td>
-                <td>@transaction.Date.ToString("MM/dd/yyyy")</td>
-
-        </tr>
-        
-    }
-    <tr>
-        <td>Toplam</td>
-        <td>@Model.ExpenseSum</td>
-    </tr>
-</table>
+<script type="text/javascript">
+    $(function () {
+        $('#txtSelectedDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            format: "dd/mm/yyyy",
+            language: "tr"
+        });
+    });
+</script>
