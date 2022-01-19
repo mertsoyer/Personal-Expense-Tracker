@@ -98,7 +98,7 @@ namespace Personal_Expense_Tracker.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "e-mail veya şifreniz doğru değil");
                     return Page();
                 }
             }

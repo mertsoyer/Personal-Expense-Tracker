@@ -58,7 +58,7 @@ namespace Personal_Expense_Tracker.Areas.Identity.Pages.Account
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Şifreler eşleşmiyor")]
             public string ConfirmPassword { get; set; }
         }
 
